@@ -16,6 +16,23 @@
 	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=f7deb444f1cd1c1934db803dc3fd7549"></script>
 	<script
 		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2530315e93e47fca95bcdf52cafb039d&libraries=clusterer,services"></script>
+		<script>//쿠키설정
+		function GetCookie (name) {
+    		var pairs = document.cookie.split(";"); // 쿠키문자열을 ;을 경계로 분할
+    		for(var i=0; i<pairs.length; i++) {
+        		var pair = pairs[i].trim(); // 쿠키 앞뒤의 빈칸 제거
+        		var unit = pair.split("=");
+        		if(unit[0] == name)
+            		return unescape(unit[1]);
+    		}
+    		return null;
+		}
+		function SetCookie (name, value, expireDate) {
+   			 var cookieStr = name + "=" + escape(value) +
+      		  ((expireDate == null)?"":("; expires=" + expireDate.toGMTString()));
+     		   document.cookie = cookieStr;
+			}
+</script>
 </head>
 
 <body>
@@ -79,14 +96,14 @@
 				<div class="menu" onclick="openSubSidebar(3)"
 					onmouseover="this.children[0].src='assets/bookmark_white.png'"
 					onmouseout="this.children[0].src='assets/bookmark_green.png'">
-					<img src="assets/bookmark_green.png" alt="이전 기록">
-					이전 기록
+					<img src="assets/bookmark_green.png" alt="즐겨찾기">
+					즐겨찾기
 				</div>
 				<div class="menu" onclick="openSubSidebar(4)"
-					onmouseover="this.children[0].src='assets/more_white.png'"
-					onmouseout="this.children[0].src='assets/more_green.png'">
-					<img src="assets/more_green.png" alt="더보기">
-					더보기
+					onmouseover="this.children[0].src='assets/call_white.png'"
+					onmouseout="this.children[0].src='assets/call_green.png'">
+					<img src="assets/call_green.png" alt="전화및문자">
+					전화및문자
 				</div>
 			</div>
 		</div>
@@ -107,6 +124,7 @@
 							<form>
 								<b style="font-size: 20px; color:rgb(43, 203, 140);">키워드</b> : 
 								<input type="text" value="부경대학교" id="keyword" size="18"> 
+							
 							</form>
 							<br>
 							<!--키워드 검색을 실행할 submit 버튼-->
@@ -115,8 +133,9 @@
 							<button type="button" class="searchbutton" onclick="selectMarkers(); return false;">경유지</button>
 							<!--길찾기를 실행할 버튼-->
 							<button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
+							
 						</div>
-	
+						
 						<br>
 	
 						<div id="strnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
@@ -125,7 +144,7 @@
 						<div id="dstnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
 							도착지 : 
 						</div>
-	
+							<button type='button' class="searchbutton" onclick="AddCookie();return false; alert('장소가 저장되었습니다'); ">즐겨찾기</button>
 					<br>
 	
 					<!--경로에 따른 거리 및 시간-->
@@ -164,6 +183,52 @@
 		<div id ="subSidebar_3" class ="subSidebar">
 			<div class="contents">
 				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<div id="menu_wrap" class="bg_white">
+				<b style="font-size: 20px; color:rgb(43, 203, 140);">즐겨찾기</b><br><br>
+				
+				
+				<button type="submit" class="cookiebutton" onclick="DelCookie(); return false;">즐겨찾기 삭제</button>
+ 				<br><br>
+ 				<b style="font-size: 20px; color:rgb(43, 203, 140);">저장된 즐겨찾기</b><br>
+			
+
+			<script>
+				var startnm=GetCookie("startnm");
+				var endnm=GetCookie("endnm");
+				
+				function AddCookie(name)//쿠키생성
+				{
+					expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+					SetCookie("startnm",startnm,expire);
+					SetCookie("startX",startX,expire);
+					SetCookie("startY",startY,expire);
+					SetCookie("endnm",endnm,expire);
+					SetCookie("endX",endX,expire);
+					SetCookie("endY",endY,expire);
+
+				}
+				function DelCookie(name)//쿠키삭제
+				{
+					deleteCookie("startnm","");
+					deleteCookie("startX","");
+					deleteCookie("startY","");
+					deleteCookie("endnm","");
+					deleteCookie("endX","");
+					deleteCookie("endY","");
+				}
+
+				
+				document.write ("<p style=' font-size: 15px; color:rgb(43, 203, 140);'> 출발지 : " + startnm + "<br>")
+				document.write( "<p style=' font-size: 15px; color:rgb(43, 203, 140);'> 도착지 : " + endnm + "<br><br>")
+			</script>
+
+			
+			
+		</div>	
+		<div id ="subSidebar_4" class ="subSidebar">
+			<div class="contents">
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<div id="menu_wrap" class="bg_white">
 				<!-- 비상 연락처 설정 -->
 				<form class="pathsearch">
 					<div style="float: left; margin-bottom: 5px;">
@@ -191,7 +256,7 @@
 					</div>									
 				</form>
 			</div>
-		</div>	
+		</div>
 
 		<!--받아온 좌표 값을 임시로 저장 해 둘 hidden divs-->
 		<div id="placenm" style='height: 0px; opacity: 0;'>
@@ -328,6 +393,7 @@
             console.log(endX)
             console.log(endY)
         };
+        
 
 		var CCTV_markers = [];
 		var police_markers = [];
