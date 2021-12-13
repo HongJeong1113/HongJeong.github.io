@@ -417,3 +417,12 @@ body {
     height: 25px;
     margin-top: 5px;
 }
+.cookiebutton {
+    background-color: rgb(34, 204, 140);
+    color: white;
+    font-weight: bold;
+    width: 100px;
+    height: 25px;
+    margin-top: 5px;
+}
+
